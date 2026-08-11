@@ -35,7 +35,7 @@ model Chamado {
   titulo    String
   descricao String
 
-  userId Int
+  userId Int //foreign key
   user   User @relation(fields: [userId], references: [id])
 
   status     StatusChamado     @default(ABERTO)
