@@ -58,6 +58,16 @@ model Departamento {
   usuarios User[]
 }
 
+model Localizacao {
+  id Int @id @default(autoincrement())
+
+  nome    String
+  setor   String
+  detalhe String
+
+  chamados Chamado[]
+}
+
 model SolicitacaoTecnico {
   id Int @id @default(autoincrement())
 
@@ -77,6 +87,7 @@ model Chamado {
   descricao        String?
   categoria        String
   numeroPatrimonio Int
+  equipamento      String
 
   userId Int //foreign key
   user   User @relation("ChamadosCriados", fields: [userId], references: [id])
@@ -86,6 +97,9 @@ model Chamado {
 
   departamentoId Int
   departamento   Departamento @relation(fields: [departamentoId], references: [id])
+
+  localizacaoId Int
+  localizacao   Localizacao @relation(fields: [localizacaoId], references: [id])
 
   status     StatusChamado     @default(ABERTO)
   prioridade PrioridadeChamado @default(MEDIA)
