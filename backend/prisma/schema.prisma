@@ -14,19 +14,26 @@ datasource db {
 
 enum Role {
   USER
+  TECHNICIAN
   ADMIN
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String
-  role      Role
+  id       Int    @id @default(autoincrement())
+  name     String
+  email    String @unique
+  password String
+
+  cpf       String? @unique
+  matricula String? @unique
+  ocupacao  String
+
+  role Role @default(USER) //OBS
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  chamado Chamado[]
+  chamados Chamado[]
 }
 
 // no model Chamado vamos usar o relacionamento 1:N
