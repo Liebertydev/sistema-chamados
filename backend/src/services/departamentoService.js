@@ -10,6 +10,10 @@ class DepartamentoService {
 
        return departamentos;
     }
+
+    async buscaPorId() {
+        
+    }
 }
 
 export default new DepartamentoService();

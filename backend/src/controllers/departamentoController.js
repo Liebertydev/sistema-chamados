@@ -12,6 +12,14 @@ const listarDepartamentos = async(req, res) => {
     }
 }
 
+const buscaDepartamentoPorId = (req, res) => {
+    try {
+        const departamentoPorId = departamentoService.bus
+    } catch(e) {
+        console.error(e);
+    }
+}
+
 export default {
     listarDepartamentos
 }
