@@ -18,6 +18,14 @@ enum Role {
   ADMIN
 }
 
+enum StatusSolicitacaoTecnico {
+  PENDENTE
+  APROVADA
+  REJEITADA
+}
+
+// Não criaremos uma nova entidade Technician, pois vamos evitar a duplicação de informações, porque de USER para TECHNICIAN só muda a responsabilidade.
+
 model User {
   id       Int    @id @default(autoincrement())
   name     String
@@ -33,7 +41,20 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  chamados Chamado[]
+  chamados            Chamado[]
+  solicitacoesTecnico SolicitacaoTecnico[]
+}
+
+model SolicitacaoTecnico {
+  id Int @id @default(autoincrement())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  status StatusSolicitacaoTecnico @default(PENDENTE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 // no model Chamado vamos usar o relacionamento 1:N
