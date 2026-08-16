@@ -36,6 +36,9 @@ model User {
   matricula String? @unique
   ocupacao  String
 
+  departamentoId Int
+  departamento   Departamento @relation(fields: [departamentoId], references: [id])
+
   role Role @default(USER) //OBS
 
   createdAt DateTime @default(now())
@@ -45,6 +48,14 @@ model User {
   chamadosAtendidos Chamado[] @relation("ChamadosAtendidos")
 
   solicitacoesTecnico SolicitacaoTecnico[]
+}
+
+model Departamento {
+  id   Int    @id @default(autoincrement())
+  nome String @unique
+
+  chamados Chamado[]
+  usuarios User[]
 }
 
 model SolicitacaoTecnico {
@@ -72,6 +83,9 @@ model Chamado {
 
   tecnicoId Int?
   tecnico   User? @relation("ChamadosAtendidos", fields: [tecnicoId], references: [id])
+
+  departamentoId Int
+  departamento   Departamento @relation(fields: [departamentoId], references: [id])
 
   status     StatusChamado     @default(ABERTO)
   prioridade PrioridadeChamado @default(MEDIA)
