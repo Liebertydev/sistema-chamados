@@ -11,8 +11,18 @@ class DepartamentoService {
        return departamentos;
     }
 
-    async buscaPorId() {
-        
+    async buscaPorId(id) {
+        const departamentoId = await prisma.departamento.findUnique({
+            where: {
+                id: id
+            }
+        });
+
+        if (!departamentoId) {
+            throw new Error("Departamento não encontrado.");
+        }
+
+        return departamentoId;
     }
 }
 

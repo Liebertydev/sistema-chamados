@@ -12,14 +12,26 @@ const listarDepartamentos = async(req, res) => {
     }
 }
 
-const buscaDepartamentoPorId = (req, res) => {
+const buscarDepartamentoPorId = async (req, res) => {
     try {
-        const departamentoPorId = departamentoService.bus
+        const id = Number(req.params.id);
+
+        if (isNaN(id)) {
+            return res.status(400).json({ mensagem: "ID inválido." });
+        }
+
+        const departamentoPorId = await departamentoService.buscaPorId(id);
+        res.json(departamentoPorId);
     } catch(e) {
-        console.error(e);
+        if(e.message === "Departamento não encontrado.") {
+            return res.status(404).json({ mensagem: e.message });  
+        }
+
+        return res.status(500).json({ message: "Erro interno do servidor." });
     }
 }
 
 export default {
-    listarDepartamentos
+    listarDepartamentos,
+    buscarDepartamentoPorId
 }
