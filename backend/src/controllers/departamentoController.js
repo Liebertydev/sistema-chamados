@@ -21,13 +21,13 @@ const buscarDepartamentoPorId = async (req, res) => {
         }
 
         const departamentoPorId = await departamentoService.buscaPorId(id);
-        res.json(departamentoPorId);
+        return res.json(departamentoPorId);
     } catch(e) {
         if(e.message === "Departamento não encontrado.") {
             return res.status(404).json({ mensagem: e.message });  
         }
 
-        return res.status(500).json({ message: "Erro interno do servidor." });
+        return res.status(500).json({ mensagem: "Erro interno do servidor." });
     }
 }
 
@@ -38,7 +38,7 @@ const criarDepartamento = async (req, res) => {
 
         if(!nome || typeof nome !== "string" || nome.trim() === "") {
             return res.status(400).json({
-                message: "O campo 'nome' é obrigatório e deve ser um texto válido." 
+                menssagem: "O campo 'nome' é obrigatório e deve ser um texto válido." 
             });
         }
         
@@ -87,7 +87,9 @@ const atualizarDepartamento = async (req, res) => {
         }
 
         if(e.message === "Já existe um departamento com este nome.") {
-            return res.status(409).json("Já existe um departamento com este nome.");
+            return res.status(409).json({
+                mensagem: "Já existe um departamento com este nome."
+            });
         }
 
         console.error("Erro ao atualizar departamento:", e.message);
