@@ -3,7 +3,12 @@ import departamentoController from "../controllers/departamentoController.js";
 
 const router = express.Router();
 
+//Rotas GET
 router.get("/", departamentoController.listarDepartamentos); 
 router.get("/:id", departamentoController.buscarDepartamentoPorId);
+
+//Rotas POST
+
+router.post("/", departamentoController.criarDepartamento);
 
 export default router;

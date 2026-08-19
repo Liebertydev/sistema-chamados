@@ -24,6 +24,25 @@ class DepartamentoService {
 
         return departamentoId;
     }
+
+
+    async criarDepartamento(nome) {
+        const departamentoExistente = await prisma.departamento.findUnique({
+            where: {
+                nome: nome
+            }
+        });
+
+        if (departamentoExistente) {
+            throw new Error("Já existe um departamento com este nome.");
+        }
+
+        const departamento = await prisma.departamento.create({
+            data: {
+                nome: nome
+            }
+        })
+    }
 }
 
 export default new DepartamentoService();

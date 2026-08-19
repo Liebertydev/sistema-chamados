@@ -31,7 +31,35 @@ const buscarDepartamentoPorId = async (req, res) => {
     }
 }
 
+const criarDepartamento = async (req, res) => {
+    try {
+
+        const { nome } = req.body;
+
+        if(!nome || typeof nome !== "string" || nome.trim() === "") {
+            return res.status(400).json({
+                message: "O campo 'nome' é obrigatório e deve ser um texto válido." 
+            });
+        }
+        
+        const departamento = await departamentoService.criarDepartamento(nome);
+
+        return res.status(201).json(departamento);
+
+    } catch (e) {
+
+        if(e.message === "Já existe um departamento com este nome.") {
+            return res.status(409).json({ mensagem: e.message });
+        }
+
+        console.error("Erro ao criar departamento:", e.message);
+        return res.status(500).json({ mensagem: "Erro interno no servidor." });
+
+    }
+}
+
 export default {
     listarDepartamentos,
-    buscarDepartamentoPorId
+    buscarDepartamentoPorId,
+    criarDepartamento
 }
