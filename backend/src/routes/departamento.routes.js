@@ -11,4 +11,8 @@ router.get("/:id", departamentoController.buscarDepartamentoPorId);
 
 router.post("/", departamentoController.criarDepartamento);
 
+//Rotas PATCH
+
+router.patch("/:id", departamentoController.atualizarDepartamento);
+
 export default router;

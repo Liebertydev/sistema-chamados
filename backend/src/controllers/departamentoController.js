@@ -58,8 +58,51 @@ const criarDepartamento = async (req, res) => {
     }
 }
 
+const atualizarDepartamento = async (req, res) => {
+    try {
+        const { nome } = req.body;
+        const id = Number(req.params.id);
+
+        if (isNaN(id)) {
+            return res.status(400).json({
+                mensagem: "ID inválido."
+            });
+        }
+
+        if (!nome || typeof nome !== "string" || nome.trim() === "") {
+            return res.status(400).json({
+                mensagem: "O campo 'nome' é obrigatório e deve ser um texto válido."
+            });
+        }
+
+        const departamento = await departamentoService.atualizarDepartamento(id, nome);
+
+        res.status(200).json(departamento);
+
+    } catch(e) {
+        if (e.message === "Departamento não encontrado.") {
+            return res.status(404).json({
+                mensagem: e.message
+            });
+        }
+
+        if(e.message === "Já existe um departamento com este nome.") {
+            return res.status(409).json("Já existe um departamento com este nome.");
+        }
+
+        console.error("Erro ao atualizar departamento:", e.message);
+
+        return res.status(500).json({
+            mensagem: "Erro interno no servidor."
+        });
+    }
+
+
+}
+
 export default {
     listarDepartamentos,
     buscarDepartamentoPorId,
-    criarDepartamento
+    criarDepartamento,
+    atualizarDepartamento
 }

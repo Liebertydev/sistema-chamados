@@ -43,6 +43,37 @@ class DepartamentoService {
             }
         })
     }
+
+    async atualizarDepartamento(id, nome) {
+        const departamento = await prisma.departamento.findUnique({
+            where: {
+                id: id
+            }
+        }); 
+
+        if (!departamento) {
+            throw new Error("Departamento não encontrado.")
+        }
+
+        const departamentoExistente = await prisma.departamento.findUnique({
+            where: {
+                nome: nome
+            }
+        });
+
+        if (departamentoExistente && departamentoExistente.id !== id) {
+            throw new Error("Já existe um departamento com este nome.")
+        }
+
+        return await prisma.departamento.update({
+            where: {
+                id: id
+            },
+            data: {
+                nome: nome
+            }
+        });
+    }
 }
 
 export default new DepartamentoService();
