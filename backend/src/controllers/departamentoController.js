@@ -96,13 +96,42 @@ const atualizarDepartamento = async (req, res) => {
             mensagem: "Erro interno no servidor."
         });
     }
+}
 
+const excluirDepartamento = async (req, res) => {
+    try {
 
+        const id = Number(req.params.id);
+    
+        if(isNaN(id)) {
+            return res.status(400).json({
+                mensagem: "ID inválido."
+            });
+        }
+    
+        const departamentoExcluido = await departamentoService.excluirDepartamento(id);
+    
+        return res.status(200).json(departamentoExcluido);
+
+    } catch (e) {
+        if (e.message === "Departamento não encontrado.") {
+            return res.status(404).json({
+                mensagem: e.message
+            });
+        }
+
+        console.error("Erro ao excluir departamento.", e.message);
+
+        return res.status(500).json({
+            mensagem: "Erro interno de servidor"
+        });
+    }
 }
 
 export default {
     listarDepartamentos,
     buscarDepartamentoPorId,
     criarDepartamento,
-    atualizarDepartamento
+    atualizarDepartamento,
+    excluirDepartamento
 }

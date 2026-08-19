@@ -74,6 +74,26 @@ class DepartamentoService {
             }
         });
     }
+
+    async excluirDepartamento(id) {
+        const departamento = await prisma.departamento.findUnique({
+            where: {
+                id: id
+            }
+        });
+
+        if(!departamento) {
+            throw new Error("Departamento não encontrado.");
+        }
+
+        const departamentoExcluido = await prisma.departamento.delete({
+            where: {
+                id: id
+            }
+        });
+
+        return departamentoExcluido;
+    }
 }
 
 export default new DepartamentoService();
