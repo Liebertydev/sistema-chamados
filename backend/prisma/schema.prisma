@@ -53,6 +53,7 @@ model User {
 model Departamento {
   id   Int    @id @default(autoincrement())
   nome String @unique
+  ativo Boolean @default(true)
 
   chamados Chamado[]
   usuarios User[]

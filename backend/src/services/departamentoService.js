@@ -75,7 +75,7 @@ class DepartamentoService {
         });
     }
 
-    async excluirDepartamento(id) {
+    async desativarDepartamento(id) {
         const departamento = await prisma.departamento.findUnique({
             where: {
                 id: id
@@ -86,13 +86,20 @@ class DepartamentoService {
             throw new Error("Departamento não encontrado.");
         }
 
-        const departamentoExcluido = await prisma.departamento.delete({
+        if(!departamento.ativo) {
+            throw new Error("Departamento já está desativado.");
+        }
+
+        const departamentoDesativado = await prisma.departamento.update({
             where: {
                 id: id
+            },
+            data: {
+                ativo: false
             }
         });
 
-        return departamentoExcluido;
+        return departamentoDesativado;
     }
 }
 

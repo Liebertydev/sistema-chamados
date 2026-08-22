@@ -14,9 +14,9 @@ router.post("/", departamentoController.criarDepartamento);
 //Rotas PATCH
 
 router.patch("/:id", departamentoController.atualizarDepartamento);
+router.patch("/:id", departamentoController.desativarDepartamento);
 
 //Rotas DELETE
 
-router.delete("/:id", departamentoController.excluirDepartamento);
 
 export default router;

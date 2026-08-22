@@ -100,7 +100,7 @@ const atualizarDepartamento = async (req, res) => {
     }
 }
 
-const excluirDepartamento = async (req, res) => {
+const desativarDepartamento = async (req, res) => {
     try {
 
         const id = Number(req.params.id);
@@ -111,9 +111,9 @@ const excluirDepartamento = async (req, res) => {
             });
         }
     
-        const departamentoExcluido = await departamentoService.excluirDepartamento(id);
+        const departamentoDesativado = await departamentoService.desativarDepartamento(id);
     
-        return res.status(200).json(departamentoExcluido);
+        return res.status(200).json(departamentoDesativado);
 
     } catch (e) {
         if (e.message === "Departamento não encontrado.") {
@@ -122,7 +122,14 @@ const excluirDepartamento = async (req, res) => {
             });
         }
 
-        console.error("Erro ao excluir departamento.", e.message);
+        if(e.message === "Departamento já está desativado.") {
+            return res.status(409).json({
+                mensagem: e.message
+            })
+        }
+    
+
+        console.error("Erro ao desativar departamento.", e.message);
 
         return res.status(500).json({
             mensagem: "Erro interno de servidor"
@@ -135,5 +142,5 @@ export default {
     buscarDepartamentoPorId,
     criarDepartamento,
     atualizarDepartamento,
-    excluirDepartamento
+    desativarDepartamento
 }
